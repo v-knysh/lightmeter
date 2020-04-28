@@ -6,8 +6,8 @@
 //BH1750 lightMeter;
 
 int loopDelay = 1000;
-int lux = 0;
-int ev = 0;
+float lux = 0;
+float ev = 0;
 int lastTimerLoop = 0;
 int servoAngle = 0;
 int servoPin = 12;
@@ -18,16 +18,25 @@ byte evRange = 9; // 9 marks in circle
 
 void setup() {
   Serial.begin(9600);
+  lightsensorSetup();
 }
 
 void loop() {
   lux = getlux();
-  ev = (int) (log(lux / 2.5) / log(2.));
+  ev = calibratedEv(luxToUncalibratedEv(lux));
   print(" lux: ", lux);
   print(" ev: ", ev);
   delay(1000);
 }
 
+float luxToUncalibratedEv(float lux){
+    return (log(lux / 2.5) / log(2.));
+}
+
+float calibratedEv(float uncalibrated){
+    float calibrated = uncalibrated;
+    return calibrated;
+}
 
 void print(String key, String val) {
   Serial.print(key);
