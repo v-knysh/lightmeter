@@ -1,8 +1,9 @@
-#include <math.h>  
+#include <math.h>
 #include <Wire.h>
+#include "lightsensor.h"
 
 
-BH1750 lightMeter;
+//BH1750 lightMeter;
 
 int loopDelay = 1000;
 int lux = 0;
@@ -20,22 +21,22 @@ void setup() {
 }
 
 void loop() {
-    lux = 10;
-    ev = (int) (log(lux / 2.5) / log(2.));
-    print(" lux: ", lux);
-    print(" ev: ", ev);
-    delay(1000);
+  lux = getlux();
+  ev = (int) (log(lux / 2.5) / log(2.));
+  print(" lux: ", lux);
+  print(" ev: ", ev);
+  delay(1000);
 }
 
 
-void print(String key, String val){
-    Serial.print(key);
-    Serial.print(val);  
-    Serial.println(";");
+void print(String key, String val) {
+  Serial.print(key);
+  Serial.print(val);
+  Serial.println(";");
 }
-void print(String key, int val){
-    print(key, String(val));
+void print(String key, int val) {
+  print(key, String(val));
 }
-void print(String key, float val){
-    print(key, String(val));
+void print(String key, float val) {
+  print(key, String(val));
 }
