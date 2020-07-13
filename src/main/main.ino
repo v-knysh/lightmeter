@@ -3,22 +3,21 @@
 #include "lightsensor.h"
 #include "light_calc.h"
 #include "monitor.h"
-#include <Servo.h>
+#include "servo.h"
 
 
 
 float lux = 0;
 float ev = 0;
 
-Servo servo;
-int angle = 10;
+int servoPin = 7;
 
 
 void setup() {
     Serial.begin(9600);
     lightsensorSetup();
     monitorSetup();
-    servo.attach(7);
+    servoSetup(7);
 }
 
 void loop() {
@@ -29,9 +28,8 @@ void loop() {
     showOneDecimalPrecision(ev);
    // Expect: ev with one decimal precision
     delay(1000);
-    
-    servo.write(22.5 * ev);   
-    delay(1000);            
+    showOnServo(ev);
+    delay(1000);
 }
 
 void print(String key, String val) {
