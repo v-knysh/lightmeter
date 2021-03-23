@@ -1,52 +1,54 @@
 import math
 import random
 
-times = [30, 60, 125, 250, 500, 1000]
-shutters = [2.8, 4, 5.6, 8, 11, 16]
-len_times = len(times)
-len_shutters = len(shutters)
+shutter_speeds = [30, 60, 125, 250, 500, 1000]
+apertures = [2.8, 4, 5.6, 8, 11, 16]
+len_shutter_speeds = len(shutter_speeds)
+len_apertures = len(apertures)
 
-times_max_index = len_times - 1
-shutters_max_index = len_shutters - 1
+shutter_speeds_max_index = len_shutter_speeds - 1
+apertures_max_index = len_apertures - 1
 
 CODE_MIN_EV = -1
-CODE_MAX_EV = 1
-CODE_EV_OK = 0
-CODE_NO_MORE_PAIRS = 4
+CODE_MAX_EV = -2
+CODE_NO_MORE_PAIRS = -3
+CODE_EV_OK = -4
 
+def calculate_ev(shutter_speed, aperture):
+    return int(math.log2(aperture ** 2 * shutter_speed) + 0.5)
 
-min_ev = int(math.log2(shutters[0] ** 2 * times[0]) + 0.5)
-max_ev = int(math.log2(shutters[-1] ** 2 * times[-1]) + 0.5)
+min_ev = calculate_ev(shutter_speeds[0], apertures[0])
+max_ev = calculate_ev(shutter_speeds[-1], apertures[-1])
 
 
 def indexes_of_time_shutter(ev, count):
     if ev < min_ev:
         return 0, 0, CODE_MIN_EV
     if ev > max_ev:
-        return times_max_index, shutters_max_index, CODE_MAX_EV
+        return shutter_speeds_max_index, apertures_max_index, CODE_MAX_EV
 
-    first_shutter_index, first_time_index = first_indexes(ev)
+    first_shutter_speed_index, first_aperture_index = first_indexes(ev)
 
-    total_pairs_count = total_pairs_amount(first_shutter_index, first_time_index)
+    total_pairs_count = total_pairs_amount(first_shutter_speed_index, first_aperture_index)
     if count + 1 > total_pairs_count:
         return 0, 0, CODE_NO_MORE_PAIRS
 
-    time_index = first_time_index - count
-    shutter_index = first_shutter_index + count
+    time_index = first_shutter_speed_index - count
+    shutter_index = first_aperture_index + count
 
     return time_index, shutter_index, CODE_EV_OK
 
 
-def total_pairs_amount(first_shutter_index, first_time_index):
-    total_pairs_count = min(first_time_index, shutters_max_index - first_shutter_index) + 1
+def total_pairs_amount(first_shutter_speed_index, first_aperture_index):
+    total_pairs_count = min(first_shutter_speed_index, apertures_max_index - first_aperture_index) + 1
     return total_pairs_count
 
 
 def first_indexes(ev):
     delta_ev = ev - min_ev
-    first_time_index = min(delta_ev, times_max_index)
-    first_shutter_index = max(delta_ev - times_max_index, 0)
-    return first_shutter_index, first_time_index
+    first_shutter_speed_index = min(delta_ev, shutter_speeds_max_index)
+    first_aperture_index = max(delta_ev - shutter_speeds_max_index, 0)
+    return first_shutter_speed_index, first_aperture_index
 
 
 def find_pairs(ev):
@@ -59,7 +61,7 @@ def find_pairs(ev):
             err_str = "+"
         if code == CODE_MIN_EV:
             err_str = "-"
-        print(f"ev: {ev}, t: {times[t]}, s: {shutters[s]} {err_str}")
+        print(f"ev: {ev}, t: {shutter_speeds[t]}, s: {apertures[s]} {err_str}")
         if code != CODE_EV_OK:
             break
 
