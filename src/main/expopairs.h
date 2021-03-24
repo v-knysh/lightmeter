@@ -1,9 +1,9 @@
 #ifndef SHUTTERS_TABLE
   #define SHUTTERS_TABLE
-    class ShutterAperturePair
+    class Expopair
     {
       public:
-        ShutterAperturePair();
+        Expopair();
         int aperture_value(int index);
         int shutter_speed(int index);
         int status();

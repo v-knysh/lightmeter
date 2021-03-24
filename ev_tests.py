@@ -3,6 +3,7 @@ import random
 
 shutter_speeds = [30, 60, 125, 250, 500, 1000]
 apertures = [2.8, 4, 5.6, 8, 11, 16]
+
 len_shutter_speeds = len(shutter_speeds)
 len_apertures = len(apertures)
 
