@@ -8,7 +8,8 @@ float luxToUncalibratedEv(float lux){
 }
 
 float calibratedEv(float uncalibrated){
-    float calibrated = uncalibrated;
+//    first attempt to linear fit
+    float calibrated = uncalibrated * 2.45 - 5.03;
     return calibrated;
 }
 

@@ -7,6 +7,7 @@
         int aperture_value(int index);
         int shutter_speed(int index);
         int status();
+        char status_str();
         int amount_pairs();
         void update(int ev);
       private:

@@ -20,6 +20,12 @@ that builds files with constants based on json file located in confids folder.
 2. open Arduino IDE
 3. compile and upload
 
+### Notes:
+
+calibratedEv should be filled by experimental data. better results would be if light sensor will be in its final position.
+I hope linear fit would be ok, so wolfram alpha "linear fit" would be enough
+
+
 
 
 

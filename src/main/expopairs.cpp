@@ -4,10 +4,10 @@
 #include "expopairs.h"
 #include "constants.h"
 
-int CODE_MIN_EV = -1;
-int CODE_MAX_EV = -2;
-int CODE_EV_OK = -4;
-int CODE_NO_MORE_PAIRS = -3;
+#define CODE_MIN_EV -1
+#define CODE_MAX_EV -2
+#define CODE_EV_OK -4
+#define CODE_NO_MORE_PAIRS -3
 
 
 int first_shutter_speed_index(int ev){
@@ -43,6 +43,12 @@ int Expopair::aperture_value(int index){
 
 int Expopair::status(){
     return _status;
+}
+
+char Expopair::status_str(){
+    if (_status == CODE_MIN_EV){return '-';}
+    if (_status == CODE_MAX_EV){return '+';}
+    return ' ';
 }
 
 int Expopair::amount_pairs(){
