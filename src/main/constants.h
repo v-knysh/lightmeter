@@ -10,5 +10,7 @@
 #define MIN_EV 6
 #define MAX_EV 18
 
+#define CAMERA_NAME "fed 5v"
+
 extern int shutter_speeds[LEN_SHUTTER_SPEEDS];
 extern int apertures[LEN_APERTURES];

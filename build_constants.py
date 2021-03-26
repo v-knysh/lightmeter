@@ -23,6 +23,7 @@ header_file_template = """
 #define APERTURES_MAX_INDEX {apertures_max_index}
 #define MIN_EV {min_ev}
 #define MAX_EV {max_ev}
+#define CAMERA_NAME "{camera_name}"
 
 extern int shutter_speeds[LEN_SHUTTER_SPEEDS];
 extern int apertures[LEN_APERTURES];
@@ -47,9 +48,10 @@ class Context:
     max_ev: int
     shutter_speeds_array_str: str
     apertures_array_str: str
+    camera_name: str
 
     @classmethod
-    def build(cls, config):
+    def build(cls, config, filename):
 
         shutter_speeds = config['shutter_speeds']
         apertures = config['apertures']
@@ -65,6 +67,7 @@ class Context:
             max_ev=calculate_ev(shutter_speeds[-1], apertures[-1]),
             shutter_speeds_array_str=array_str(shutter_speeds),
             apertures_array_str=array_str([int(a * 10) for a in apertures]),
+            camera_name=filename.replace(".json", "").replace("_", " ").capitalize(),
         )
     def collect_header(self):
         return header_file_template.format(**asdict(self))
@@ -80,7 +83,7 @@ if __name__ == "__main__":
     # filename = "fed5.json"
     with open(os.path.join("configs", filename)) as f:
         conf = json.load(f)
-    context = Context.build(conf)
+    context = Context.build(conf, filename)
 
     with open(header_filename, "w") as f:
         f.write(context.collect_header())
