@@ -50,37 +50,59 @@ void SSD1306_vertical_line(int y_start, int y_end, int x, char color, uint8_t* b
     }
 };
 
-//void SSD1306_vertical_line_dots(int y_start, int y_end, int x, char color, uint8_t* buffer){
-//
-//};
+void OledMonitor::set_iso(int iso){
+    _iso = iso;
+}
+void OledMonitor::set_top_av(int top_av){
+    _top_av = top_av;
+}
+void OledMonitor::set_top_t(int top_t){
+    _top_t = top_t;
+}
+void OledMonitor::set_main_av(int main_av){
+    _main_av = main_av;
+}
+void OledMonitor::set_main_t(int main_t){
+    _main_t = main_t;
+}
+void OledMonitor::set_bottom_av(int bottom_av){
+    _bottom_av = bottom_av;
+}
+void OledMonitor::set_bottom_t(int bottom_t){
+    _bottom_t = bottom_t;
+}
+void OledMonitor::set_ev(float ev){
+    _ev = ev;
+}
+void OledMonitor::set_status_str(String status_str){
+    _status_str = status_str;
+}
 
+void OledMonitor::render(){
 
+    char iso_str[8]; sprintf(iso_str,"ISO: %d",_iso);
 
-
-void OledMonitor::update(int i){
     SSD1306_clear(oled_buf);
-    SSD1306_string(0, 0, CAMERA_NAME, 12, 1, oled_buf);
-    SSD1306_string(79, 0, "ISO: 200", 12, 1, oled_buf);
+    SSD1306_string(0, 0, CAMERA_NAME, 12, WHITE, oled_buf);
+    SSD1306_string(79, 0, iso_str, 12, WHITE, oled_buf);
 
-    SSD1306_string(0, 15,  "2.8               125", 12, 1, oled_buf);
-    SSD1306_string(2, 29, "4.0         60 ", 16, 1, oled_buf);
-    SSD1306_string(0, 48, "5.6               30", 12, 1, oled_buf);
+    SSD1306_string(0, 15, "2.8", 12, WHITE, oled_buf);
+    SSD1306_string(110, 15, "125", 12, WHITE, oled_buf);
+
+    SSD1306_string(3, 29, "4.0", 16, WHITE, oled_buf);
+    SSD1306_string(101, 29, " 60", 16, WHITE, oled_buf);
+
+    SSD1306_string(60, 29, "+", 16, BLACK, oled_buf);
+
+    SSD1306_string(0, 48, "5.6", 12, WHITE, oled_buf);
+    SSD1306_string(110, 48, " 30", 12, WHITE, oled_buf);
+
 
     SSD1306_horizontal_line(0, 127, 27, DOTS, oled_buf);
     SSD1306_horizontal_line(0, 127, 47, DOTS, oled_buf);
     SSD1306_vertical_line(27, 47, 0, DOTS, oled_buf);
     SSD1306_vertical_line(27, 47, 127, DOTS, oled_buf);
 
-//    SSD1306_horizontal_line(0, 127, 60, BLACK, oled_buf);
-
-//        SSD1306_string(50, 53, "123", 12, 1, oled_buf);
-//    SSD1306_string(0, 0, "121111111111111111111111111111111111111111111111111111113", 12, 1, oled_buf);
-//    for (int k = 0; k < 64)
-    //        SSD1306_pixel(j, 12, j%2, oled_buf);
-//        SSD1306_pixel(j, 27, j%2, oled_buf);
-//        SSD1306_pixel(j, 47, j%2, oled_buf);
-//        SSD1306_pixel(j, 52, j%2, oled_buf);
-//        SSD1306_pixel(j, 64, j%2, oled_buf);
     SSD1306_display(oled_buf);
 }
 

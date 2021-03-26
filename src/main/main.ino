@@ -40,9 +40,16 @@ void loop() {
     print(" status: ", expopair.status_str());
     print("------------------------------: ", 0);
 
-    qwe++;
-    if (qwe > 10){qwe = 0;}
-    oled_monitor.update(qwe);
+    oled_monitor.set_iso(200);
+    oled_monitor.set_top_av(28);
+    oled_monitor.set_top_t(125);
+    oled_monitor.set_main_av(40);
+    oled_monitor.set_main_t(60);
+    oled_monitor.set_bottom_av(56);
+    oled_monitor.set_bottom_t(30);
+    oled_monitor.set_status_str("+");
+
+    oled_monitor.render();
     delay(1000);
 }
 
