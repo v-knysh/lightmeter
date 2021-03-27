@@ -33,24 +33,31 @@ void loop() {
     print(" lux: ", lux);
     expopair.update(ev);
     int pairs = expopair.amount_pairs();
-
-    print(" ev: ", ev);
-    print(" aperture_value: ", String(expopair.aperture_value(0) / 10) + '.' + String(expopair.aperture_value(0) % 10));
-    print(" shutter_speed: ", expopair.shutter_speed(0));
-    print(" status: ", expopair.status_str());
-    print("------------------------------: ", 0);
-
     oled_monitor.set_iso(200);
+
     oled_monitor.set_top_av(28);
     oled_monitor.set_top_t(125);
-    oled_monitor.set_main_av(40);
-    oled_monitor.set_main_t(60);
     oled_monitor.set_bottom_av(56);
     oled_monitor.set_bottom_t(30);
     oled_monitor.set_status_str("+");
 
-    oled_monitor.render();
-    delay(1000);
+    for (int ev = 8; ev < 18; ev++){
+        expopair.update(ev);
+        pairs = expopair.amount_pairs();
+
+        print(" ev: ", ev);
+        print(" aperture_value: ", String(expopair.aperture_value(pairs / 2) / 10) + '.' + String(expopair.aperture_value(pairs / 2) % 10));
+        print(" shutter_speed: ", expopair.shutter_speed(pairs / 2));
+        print(" status: ", expopair.status_str());
+        print("------------------------------: ", 0);
+
+        oled_monitor.set_main_av(expopair.aperture_value(pairs / 2));
+        oled_monitor.set_main_t(expopair.shutter_speed(pairs / 2));
+
+        oled_monitor.render();
+        delay(1000);
+    }
+
 }
 
 void print(String key, String val) {

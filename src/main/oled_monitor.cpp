@@ -51,28 +51,54 @@ void SSD1306_vertical_line(int y_start, int y_end, int x, char color, uint8_t* b
 };
 
 void OledMonitor::set_iso(int iso){
-    _iso = iso;
+    sprintf(_iso_str,"ISO: %3d",iso);
 }
 void OledMonitor::set_top_av(int top_av){
-    _top_av = top_av;
+    if (top_av == 0){sprintf(_top_av_str,"   "); return;}
+    if (top_av < 100){
+        sprintf(_top_av_str,"%1d.%1d",int(top_av/10),int(top_av%10)); return;
+    } else {
+        sprintf(_top_av_str,"%1d",top_av/10); return;
+    }
 }
 void OledMonitor::set_top_t(int top_t){
-    _top_t = top_t;
+    if (top_t == 0){sprintf(_top_t_str,"   "); return;}
+    if (top_t < 100){
+        sprintf(_top_t_str," %2d",top_t);
+    } else {
+        sprintf(_top_t_str,"%3d",top_t);
+    }
 }
 void OledMonitor::set_main_av(int main_av){
-    _main_av = main_av;
+    if (main_av < 100){
+        sprintf(_main_av_str,"%1d.%1d",main_av/10,main_av%10);
+    } else {
+        sprintf(_main_av_str,"%2d",main_av/10);
+    }
 }
 void OledMonitor::set_main_t(int main_t){
-    _main_t = main_t;
+    if (main_t < 100){
+        sprintf(_main_t_str," %2d",main_t);
+    } else {
+        sprintf(_main_t_str,"%3d",main_t);
+    }
 }
 void OledMonitor::set_bottom_av(int bottom_av){
-    _bottom_av = bottom_av;
-}
+    if (bottom_av == 0){sprintf(_bottom_av_str,"   "); return;}
+    if (bottom_av < 100){
+        sprintf(_bottom_av_str,"%1d.%1d",int(bottom_av/10),int(bottom_av%10)); return;
+    } else {
+        sprintf(_bottom_av_str,"%2d",int(bottom_av/10)); return;
+    }}
 void OledMonitor::set_bottom_t(int bottom_t){
-    _bottom_t = bottom_t;
-}
+    if (bottom_t == 0){sprintf(_bottom_t_str,"   "); return;}
+    if (bottom_t < 100){
+        sprintf(_bottom_t_str," %2d",bottom_t);
+    } else {
+        sprintf(_bottom_t_str,"%3d",bottom_t);
+    }}
 void OledMonitor::set_ev(float ev){
-    _ev = ev;
+    sprintf(_ev_str,"EV: %2d.%1d",int(ev),int(int(ev*10)%10));
 }
 void OledMonitor::set_status_str(String status_str){
     _status_str = status_str;
@@ -80,22 +106,26 @@ void OledMonitor::set_status_str(String status_str){
 
 void OledMonitor::render(){
 
-    char iso_str[8]; sprintf(iso_str,"ISO: %d",_iso);
-
     SSD1306_clear(oled_buf);
     SSD1306_string(0, 0, CAMERA_NAME, 12, WHITE, oled_buf);
-    SSD1306_string(79, 0, iso_str, 12, WHITE, oled_buf);
+    SSD1306_string(79, 0, _iso_str, 12, WHITE, oled_buf);
 
-    SSD1306_string(0, 15, "2.8", 12, WHITE, oled_buf);
-    SSD1306_string(110, 15, "125", 12, WHITE, oled_buf);
+//    SSD1306_string(0, 15, "2.8", 12, WHITE, oled_buf);
+//    SSD1306_string(110, 15, "125", 12, WHITE, oled_buf);
 
-    SSD1306_string(3, 29, "4.0", 16, WHITE, oled_buf);
-    SSD1306_string(101, 29, " 60", 16, WHITE, oled_buf);
 
-    SSD1306_string(60, 29, "+", 16, BLACK, oled_buf);
 
-    SSD1306_string(0, 48, "5.6", 12, WHITE, oled_buf);
-    SSD1306_string(110, 48, " 30", 12, WHITE, oled_buf);
+//    char main_t_str[3]; sprintf(iso_str,"%d",_main_t);
+
+    SSD1306_string(3, 29, _main_av_str, 16, WHITE, oled_buf);
+    SSD1306_string(101, 29, _main_t_str, 16, WHITE, oled_buf);
+
+//    SSD1306_string(60, 29, "+", 16, BLACK, oled_buf);
+
+//    SSD1306_string(0, 48, "5.6", 12, WHITE, oled_buf);
+//    SSD1306_string(110, 48, " 30", 12, WHITE, oled_buf);
+
+//    SSD1306_string(55, 48, "EV: ", 12, WHITE, oled_buf);
 
 
     SSD1306_horizontal_line(0, 127, 27, DOTS, oled_buf);

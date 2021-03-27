@@ -16,14 +16,14 @@
             void set_ev(float ev);
             void set_status_str(String status_str);
         private:
-            int _iso;
-            int _top_av;
-            int _top_t;
-            int _main_av;
-            int _main_t;
-            int _bottom_av;
-            int _bottom_t;
-            float _ev;
+            char _iso_str[9];
+            char _top_av_str[4];
+            char _top_t_str[4];
+            char _main_av_str[4];
+            char _main_t_str[4];
+            char _bottom_av_str[4];
+            char _bottom_t_str[4];
+            char _ev_str[9];
             String _status_str;
     };
 
