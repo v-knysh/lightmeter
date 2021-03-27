@@ -17,13 +17,13 @@ int first_shutter_speed_index(int ev){
 
 int first_aperture_index(int ev){
   int delta_ev = ev - MIN_EV;
-  int delta = delta_ev - SHUTTER_SPEEDS_MAX_INDEX;
+  int delta = delta_ev - APERTURES_MAX_INDEX;
   return max(delta, 0);
 }
 
 int total_pairs_amount(int first_shutter_speed_index, int first_aperture_index){
   int delta = APERTURES_MAX_INDEX - first_aperture_index;
-  return min(first_shutter_speed_index, delta);
+  return min(first_shutter_speed_index + 1, delta);
 }
 
 Expopair::Expopair(){
@@ -34,10 +34,16 @@ Expopair::Expopair(){
 }
 
 int Expopair::shutter_speed(int index){
+    if ((_first_shutter_speed_index - index < 0) || (index < 0) || (index >= _amount_pairs)){
+        return CODE_NO_MORE_PAIRS;
+    }
     return shutter_speeds[_first_shutter_speed_index - index];
 }
 
 int Expopair::aperture_value(int index){
+    if ((_first_aperture_index + index > APERTURES_MAX_INDEX) || (index >= _amount_pairs) || (index < 0)){
+        return CODE_NO_MORE_PAIRS;
+    }
     return apertures[_first_aperture_index + index];
 }
 

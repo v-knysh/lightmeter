@@ -35,24 +35,35 @@ void loop() {
     int pairs = expopair.amount_pairs();
     oled_monitor.set_iso(200);
 
-    oled_monitor.set_top_av(28);
-    oled_monitor.set_top_t(125);
-    oled_monitor.set_bottom_av(56);
-    oled_monitor.set_bottom_t(30);
-    oled_monitor.set_status_str("+");
+//     oled_monitor.set_top_av(28);
+//     oled_monitor.set_top_t(125);
+//     oled_monitor.set_bottom_av(56);
+//     oled_monitor.set_bottom_t(30);
+//     oled_monitor.set_status_str("+");
 
-    for (int ev = 8; ev < 18; ev++){
-        expopair.update(ev);
-        pairs = expopair.amount_pairs();
+    int ev = 6;
+    expopair.update(ev);
+    pairs = expopair.amount_pairs();
 
+    for (int i = 0; i < pairs; i++){
         print(" ev: ", ev);
-        print(" aperture_value: ", String(expopair.aperture_value(pairs / 2) / 10) + '.' + String(expopair.aperture_value(pairs / 2) % 10));
-        print(" shutter_speed: ", expopair.shutter_speed(pairs / 2));
+        print(" i: ", i);
+        print(" pairs: ", pairs);
+        print(" aperture_value: ", String(expopair.aperture_value(i) / 10) + '.' + String(expopair.aperture_value(i) % 10));
+        print(" shutter_speed: ", expopair.shutter_speed(i));
         print(" status: ", expopair.status_str());
         print("------------------------------: ", 0);
 
-        oled_monitor.set_main_av(expopair.aperture_value(pairs / 2));
-        oled_monitor.set_main_t(expopair.shutter_speed(pairs / 2));
+        oled_monitor.set_top_av(expopair.aperture_value(i-1));
+        oled_monitor.set_top_t(expopair.shutter_speed(i-1));
+
+        oled_monitor.set_main_av(expopair.aperture_value(i));
+        oled_monitor.set_main_t(expopair.shutter_speed(i));
+
+        oled_monitor.set_bottom_av(expopair.aperture_value(i+1));
+        oled_monitor.set_bottom_t(expopair.shutter_speed(i+1));
+
+        oled_monitor.set_status_str(expopair.status_str());
 
         oled_monitor.render();
         delay(1000);

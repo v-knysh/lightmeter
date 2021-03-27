@@ -54,7 +54,7 @@ void OledMonitor::set_iso(int iso){
     sprintf(_iso_str,"ISO: %3d",iso);
 }
 void OledMonitor::set_top_av(int top_av){
-    if (top_av == 0){sprintf(_top_av_str,"   "); return;}
+    if (top_av <= 0){sprintf(_top_av_str,"   "); return;}
     if (top_av < 100){
         sprintf(_top_av_str,"%1d.%1d",int(top_av/10),int(top_av%10)); return;
     } else {
@@ -62,7 +62,7 @@ void OledMonitor::set_top_av(int top_av){
     }
 }
 void OledMonitor::set_top_t(int top_t){
-    if (top_t == 0){sprintf(_top_t_str,"   "); return;}
+    if (top_t <= 0){sprintf(_top_t_str,"   "); return;}
     if (top_t < 100){
         sprintf(_top_t_str," %2d",top_t);
     } else {
@@ -84,14 +84,14 @@ void OledMonitor::set_main_t(int main_t){
     }
 }
 void OledMonitor::set_bottom_av(int bottom_av){
-    if (bottom_av == 0){sprintf(_bottom_av_str,"   "); return;}
+    if (bottom_av <= 0){sprintf(_bottom_av_str,"   "); return;}
     if (bottom_av < 100){
         sprintf(_bottom_av_str,"%1d.%1d",int(bottom_av/10),int(bottom_av%10)); return;
     } else {
         sprintf(_bottom_av_str,"%2d",int(bottom_av/10)); return;
     }}
 void OledMonitor::set_bottom_t(int bottom_t){
-    if (bottom_t == 0){sprintf(_bottom_t_str,"   "); return;}
+    if (bottom_t <= 0){sprintf(_bottom_t_str,"   "); return;}
     if (bottom_t < 100){
         sprintf(_bottom_t_str," %2d",bottom_t);
     } else {
@@ -100,7 +100,7 @@ void OledMonitor::set_bottom_t(int bottom_t){
 void OledMonitor::set_ev(float ev){
     sprintf(_ev_str,"EV: %2d.%1d",int(ev),int(int(ev*10)%10));
 }
-void OledMonitor::set_status_str(String status_str){
+void OledMonitor::set_status_str(char status_str){
     _status_str = status_str;
 }
 
@@ -110,20 +110,16 @@ void OledMonitor::render(){
     SSD1306_string(0, 0, CAMERA_NAME, 12, WHITE, oled_buf);
     SSD1306_string(79, 0, _iso_str, 12, WHITE, oled_buf);
 
-//    SSD1306_string(0, 15, "2.8", 12, WHITE, oled_buf);
-//    SSD1306_string(110, 15, "125", 12, WHITE, oled_buf);
-
-
-
-//    char main_t_str[3]; sprintf(iso_str,"%d",_main_t);
+    SSD1306_string(0, 15, _top_av_str, 12, WHITE, oled_buf);
+    SSD1306_string(110, 15, _top_t_str, 12, WHITE, oled_buf);
 
     SSD1306_string(3, 29, _main_av_str, 16, WHITE, oled_buf);
     SSD1306_string(101, 29, _main_t_str, 16, WHITE, oled_buf);
 
-//    SSD1306_string(60, 29, "+", 16, BLACK, oled_buf);
+//    SSD1306_string(60, 29, _status_str, 16, BLACK, oled_buf);
 
-//    SSD1306_string(0, 48, "5.6", 12, WHITE, oled_buf);
-//    SSD1306_string(110, 48, " 30", 12, WHITE, oled_buf);
+    SSD1306_string(0, 48, _bottom_av_str, 12, WHITE, oled_buf);
+    SSD1306_string(110, 48, _bottom_t_str, 12, WHITE, oled_buf);
 
 //    SSD1306_string(55, 48, "EV: ", 12, WHITE, oled_buf);
 
