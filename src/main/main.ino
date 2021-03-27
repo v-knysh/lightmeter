@@ -41,7 +41,7 @@ void loop() {
 //     oled_monitor.set_bottom_t(30);
 //     oled_monitor.set_status_str("+");
 
-    int ev = 6;
+    int ev = 20;
     expopair.update(ev);
     pairs = expopair.amount_pairs();
 
@@ -53,6 +53,8 @@ void loop() {
         print(" shutter_speed: ", expopair.shutter_speed(i));
         print(" status: ", expopair.status_str());
         print("------------------------------: ", 0);
+
+        oled_monitor.set_ev(ev);
 
         oled_monitor.set_top_av(expopair.aperture_value(i-1));
         oled_monitor.set_top_t(expopair.shutter_speed(i-1));

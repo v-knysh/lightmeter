@@ -24,7 +24,7 @@
             char _bottom_av_str[4];
             char _bottom_t_str[4];
             char _ev_str[9];
-            char _status_str;
+            char _status_str[2];
     };
 
 #endif

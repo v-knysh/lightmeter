@@ -67,7 +67,7 @@ class Context:
             max_ev=calculate_ev(shutter_speeds[-1], apertures[-1]),
             shutter_speeds_array_str=array_str(shutter_speeds),
             apertures_array_str=array_str([int(a * 10) for a in apertures]),
-            camera_name=filename.replace(".json", "").replace("_", " ").capitalize(),
+            camera_name=filename.replace(".json", "").replace("_", " ").upper(),
         )
     def collect_header(self):
         return header_file_template.format(**asdict(self))
