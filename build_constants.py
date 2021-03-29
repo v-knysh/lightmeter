@@ -24,6 +24,7 @@ header_file_template = """
 #define MIN_EV {min_ev}
 #define MAX_EV {max_ev}
 #define CAMERA_NAME "{camera_name}"
+#define MAX_PAIRS {max_pairs}
 
 extern int shutter_speeds[LEN_SHUTTER_SPEEDS];
 extern int apertures[LEN_APERTURES];
@@ -49,6 +50,10 @@ class Context:
     shutter_speeds_array_str: str
     apertures_array_str: str
     camera_name: str
+    max_pairs: int = 0
+
+    def __post_init__(self):
+        self.max_pairs = min(self.len_apertures, self.len_shutter_speeds)
 
     @classmethod
     def build(cls, config, filename):

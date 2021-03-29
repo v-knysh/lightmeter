@@ -29,7 +29,7 @@ OledMonitor::OledMonitor(){
 void OledMonitor::setup(){
   SSD1306_begin();
   SSD1306_clear(oled_buf);
-  SSD1306_string(24, 24, "BOOTING...", 16, 1, oled_buf);
+  SSD1306_string(24, 24, "LOADING...", 16, 1, oled_buf);
   SSD1306_display(oled_buf);
   delay(2000);
 }
@@ -99,9 +99,17 @@ void OledMonitor::set_bottom_t(int bottom_t){
     }}
 void OledMonitor::set_ev(float ev){
     sprintf(_ev_str,"EV: %2d.%1d",int(ev),int(ev*10)%10);
-}
-void OledMonitor::set_status_str(char status_str){
-    sprintf(_status_str,"%c",status_str);
+
+    if (ev < MIN_EV){
+        int delta = MIN_EV-ev;
+        sprintf(_status_str,"-%1d",min(delta,9));return;
+    }
+    if (ev > MAX_EV){
+        int delta = ev-MAX_EV;
+        sprintf(_status_str,"+%1d",min(delta,9));return;
+    }
+    sprintf(_status_str,"  ");
+
 }
 
 void OledMonitor::render(){
@@ -116,7 +124,7 @@ void OledMonitor::render(){
     SSD1306_string(3, 29, _main_av_str, 16, WHITE, oled_buf);
     SSD1306_string(101, 29, _main_t_str, 16, WHITE, oled_buf);
 
-    SSD1306_string(60, 29, _status_str, 16, WHITE, oled_buf);
+    SSD1306_string(56, 29, _status_str, 16, WHITE, oled_buf);
 
     SSD1306_string(0, 48, _bottom_av_str, 12, WHITE, oled_buf);
     SSD1306_string(110, 48, _bottom_t_str, 12, WHITE, oled_buf);
