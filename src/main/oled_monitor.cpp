@@ -4,6 +4,7 @@
 #include <Adafruit_SSD1306.h>
 #include "oled_monitor.h"
 #include "constants.h"
+#include "Monospaced_plain_12.h"
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -27,7 +28,6 @@ void OledMonitor::setup(){
         for(;;); // Don't proceed, loop forever
     }
     oled_display.display();
-//    oled_display.setFont();
     delay(2000); // Pause for 2 seconds
     oled_display.clearDisplay();
 }
@@ -100,34 +100,42 @@ void OledMonitor::render(){
     oled_display.setTextSize(1);             // Normal 1:1 pixel scale
     oled_display.setTextColor(SSD1306_WHITE);
 
-    oled_display.setCursor(0,0);
+    oled_display.setCursor(0,0+3);
     oled_display.println(F(CAMERA_NAME));
 
-    oled_display.setCursor(79,0);
+    oled_display.setCursor(79,0+3);
     oled_display.println(_iso_str);
 
-    oled_display.setCursor(0, 15);
+    oled_display.setCursor(0, 15+3);
     oled_display.println(_top_av_str);
-    oled_display.setCursor(110, 15);
+    oled_display.setCursor(110, 15+3);
     oled_display.println(_top_t_str);
 
-    oled_display.setTextSize(1.5);             // Normal 1:1 pixel scale
-    oled_display.setCursor(3, 29);
+    oled_display.setFont(&Monospaced_plain_12);
+    oled_display.setCursor(3, 29+12);
     oled_display.println(_main_av_str);
-    oled_display.setCursor(101, 29);
+    oled_display.setCursor(101, 29+12);
     oled_display.println(_main_t_str);
-    oled_display.setTextSize(1);             // Normal 1:1 pixel scale
 
-    oled_display.setCursor(56, 29);
+    oled_display.setCursor(56, 29+12);
     oled_display.println(_status_str);
 
-    oled_display.setCursor(0, 48);
+    oled_display.setFont();
+
+
+
+
+    oled_display.setCursor(0, 48+3);
     oled_display.println(_bottom_av_str);
-    oled_display.setCursor(110, 48);
+    oled_display.setCursor(110, 48+3);
     oled_display.println(_bottom_t_str);
 
-    oled_display.setCursor(40, 48);
+    oled_display.setCursor(40, 48+3);
     oled_display.println(_ev_str);
+
+//    oled_display.drawLine(0, 13, 127, 13, SSD1306_WHITE);
+//    oled_display.drawLine(0, 63, 127, 63, SSD1306_WHITE);
+//    oled_display.drawLine(0, 0, 127, 0, SSD1306_WHITE);
 
     oled_display.drawRect(0, 27, 128, 21, SSD1306_WHITE);
 
