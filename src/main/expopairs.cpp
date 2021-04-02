@@ -61,23 +61,24 @@ int Expopair::amount_pairs(){
     return _amount_pairs;
 }
 
-void Expopair::update(int ev){
-  if (ev < MIN_EV){
+void Expopair::update(float ev){
+  int _ev = int(ev+0.5);
+  if (_ev < MIN_EV){
     _status = CODE_MIN_EV;
     _first_shutter_speed_index = 0;
     _first_aperture_index = 0;
     _amount_pairs = 1;
     return 0;
   }
-  if (ev > MAX_EV){
+  if (_ev > MAX_EV){
     _status = CODE_MAX_EV;
     _first_shutter_speed_index = SHUTTER_SPEEDS_MAX_INDEX;
     _first_aperture_index = APERTURES_MAX_INDEX;
     _amount_pairs = 1;
     return 0;
   }
-  _first_shutter_speed_index = first_shutter_speed_index(ev);
-  _first_aperture_index = first_aperture_index(ev);
+  _first_shutter_speed_index = first_shutter_speed_index(_ev);
+  _first_aperture_index = first_aperture_index(_ev);
   _amount_pairs = total_pairs_amount(_first_shutter_speed_index, _first_aperture_index);
   _status = CODE_EV_OK;
   return 0;

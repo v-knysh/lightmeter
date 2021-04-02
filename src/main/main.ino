@@ -10,15 +10,10 @@
 #include "buttons.h"
 
 
-#define UP_BUTTON_PIN 5
-#define DOWN_BUTTON_PIN 4
-
 float lux = 0;
-float ev = 0;
+float ev = 12.0;
 
 int servoPin = 7;
-
-
 
 int current_pair = 0;
 int curr_ev = 0;
@@ -34,49 +29,45 @@ void setup() {
 //    monitorSetup();
 //    servoSetup(servoPin);
     oled_monitor.setup();
-
     setup_buttons();
 
     oled_monitor.set_iso(200);
+
+    attachInterrupt(digitalPinToInterrupt(UP_BUTTON_PIN), update_current_pair_up, RISING);
+    attachInterrupt(digitalPinToInterrupt(DOWN_BUTTON_PIN), update_current_pair_down, RISING);
+
 }
 
-void loop() {
-//     lux = getlux();
-//     ev = luxToEv(10.);
-//     print(" lux: ", lux);
-//     expopair.update(ev);
-//     int pairs = expopair.amount_pairs();
-
-
-    int ev = 12;
-
-    if (ev != curr_ev){
-        curr_ev = ev;
-        expopair.update(ev);
-        pairs = expopair.amount_pairs();
-        current_pair = pairs / 2;
-        max_pair = pairs - 1;
-    }
-
+void update_current_pair_up(){
+    print(" update_current_pair_up start", 0);
     if (up_button_pressed()){
         current_pair--;
         current_pair = max(current_pair, 0);
         print(" updated pairs: ", current_pair);
     }
+}
 
+void update_current_pair_down(){
+    print(" update_current_pair_down start", 0);
     if (down_button_pressed()){
         current_pair++;
         current_pair = min(current_pair, max_pair);
         print(" updated pairs: ", current_pair);
     }
+}
 
-    print(" ev: ", ev);
-    print(" current_pair: ", current_pair);
-    print(" pairs: ", pairs);
-    print(" aperture_value: ", String(expopair.aperture_value(current_pair) / 10) + '.' + String(expopair.aperture_value(current_pair) % 10));
-    print(" shutter_speed: ", expopair.shutter_speed(current_pair));
-    print(" status: ", expopair.status_str());
-    print("------------------------------: ", 0);
+void update_ev(){
+    print(" update_ev start", 0);
+
+    curr_ev = ev;
+    expopair.update(ev);
+    pairs = expopair.amount_pairs();
+    current_pair = pairs / 2;
+    max_pair = pairs - 1;
+}
+
+void render_monitor(){
+    print(" render_monitor start", 0);
 
     oled_monitor.set_ev(ev);
 
@@ -90,9 +81,39 @@ void loop() {
     oled_monitor.set_bottom_t(expopair.shutter_speed(current_pair+1));
 
     oled_monitor.render();
+}
 
+void loop() {
+    noInterrupts();
 
-    delay(1000);
+//     lux = getlux();
+//     ev = luxToEv(10.);
+
+    if (ev != curr_ev){
+        update_ev();
+    }
+
+//     if (up_button_pressed()){
+//         update_current_pair_up();
+//     }
+
+//     if (down_button_pressed()){
+//         update_current_pair_down();
+//     }
+
+    print(" ev: ", ev);
+    print(" current_pair: ", current_pair);
+    print(" pairs: ", pairs);
+    print(" aperture_value: ", String(expopair.aperture_value(current_pair) / 10) + '.' + String(expopair.aperture_value(current_pair) % 10));
+    print(" shutter_speed: ", expopair.shutter_speed(current_pair));
+    print(" status: ", expopair.status_str());
+
+    render_monitor();
+
+    print("------------------------------: ", 0);
+    interrupts();
+
+    delay(1500);
 
 }
 
@@ -112,4 +133,9 @@ void print(String key, double val) {
 }
 void print(String key, char val) {
     print(key, String(val));
+}
+
+void print_(String key) {
+    Serial.print(key);
+    Serial.println(";");
 }

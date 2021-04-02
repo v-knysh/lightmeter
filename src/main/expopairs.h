@@ -9,7 +9,7 @@
         int status();
         char status_str();
         int amount_pairs();
-        void update(int ev);
+        void update(float ev);
       private:
         int _first_shutter_speed_index;
         int _first_aperture_index;
