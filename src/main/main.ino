@@ -10,8 +10,8 @@
 #include "buttons.h"
 
 
-#define UP_BUTTON_PIN 5
-#define DOWN_BUTTON_PIN 4
+#define UP_BUTTON_PIN 3
+#define DOWN_BUTTON_PIN 2
 
 float lux = 0;
 float ev = 0;
