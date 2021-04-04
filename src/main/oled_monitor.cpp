@@ -1,54 +1,36 @@
 #include <SPI.h>
 #include <Wire.h>
-#include "ssd1306.h"
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #include "oled_monitor.h"
 #include "constants.h"
+#include "Monospaced_plain_12.h"
 
-#define VCCSTATE SSD1306_SWITCHCAPVCC
-#define WIDTH     128
-#define HEIGHT     64
-#define PAGES       8
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-#define OLED_RST    9
-#define OLED_DC     8
-#define OLED_CS    10
-#define SPI_MOSI   11    /* connect to the DIN pin of OLED */
-#define SPI_SCK    13     /* connect to the CLK pin of OLED */
+#define OLED_RESET    9
+#define OLED_DC       8
+#define OLED_CS       10
+#define OLED_MOSI     11    /* connect to the DIN pin of OLED */
+#define OLED_CLK      13     /* connect to the CLK pin of OLED */
 
-#define WHITE      1
-#define BLACK      0
-#define DOTS       2
-
-
-uint8_t oled_buf[WIDTH * HEIGHT / 8];
+Adafruit_SSD1306 oled_display(SCREEN_WIDTH, SCREEN_HEIGHT,
+  OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 
 OledMonitor::OledMonitor(){
 }
 
 void OledMonitor::setup(){
-  SSD1306_begin();
-  SSD1306_clear(oled_buf);
-  SSD1306_string(24, 24, "LOADING...", 16, 1, oled_buf);
-  SSD1306_display(oled_buf);
-  delay(2000);
+    if(!oled_display.begin(SSD1306_SWITCHCAPVCC)) {
+        Serial.println(F("SSD1306 allocation failed"));
+        for(;;); // Don't proceed, loop forever
+    }
+    oled_display.display();
+    delay(2000); // Pause for 2 seconds
+    oled_display.clearDisplay();
 }
-
-
-void SSD1306_horizontal_line(int x_start, int x_end, int y, char color, uint8_t* buffer){
-    for (int x = x_start; x <= x_end; x++){
-        char col = color;
-        if(col==DOTS){col = x%2;}
-        SSD1306_pixel(x, y, col, oled_buf);
-    }
-};
-void SSD1306_vertical_line(int y_start, int y_end, int x, char color, uint8_t* buffer){
-    for (int y = y_start; y <= y_end; y++){
-        char col = color;
-        if(col==DOTS){col = y%2;}
-        SSD1306_pixel(x, y, col, oled_buf);
-    }
-};
 
 void OledMonitor::set_iso(int iso){
     sprintf(_iso_str,"ISO: %3d",iso);
@@ -113,30 +95,50 @@ void OledMonitor::set_ev(float ev){
 }
 
 void OledMonitor::render(){
+    oled_display.clearDisplay();
 
-    SSD1306_clear(oled_buf);
-    SSD1306_string(0, 0, CAMERA_NAME, 12, WHITE, oled_buf);
-    SSD1306_string(79, 0, _iso_str, 12, WHITE, oled_buf);
+    oled_display.setTextSize(1);             // Normal 1:1 pixel scale
+    oled_display.setTextColor(SSD1306_WHITE);
 
-    SSD1306_string(0, 15, _top_av_str, 12, WHITE, oled_buf);
-    SSD1306_string(110, 15, _top_t_str, 12, WHITE, oled_buf);
+    oled_display.setCursor(0,0+3);
+    oled_display.println(F(CAMERA_NAME));
 
-    SSD1306_string(3, 29, _main_av_str, 16, WHITE, oled_buf);
-    SSD1306_string(101, 29, _main_t_str, 16, WHITE, oled_buf);
+    oled_display.setCursor(79,0+3);
+    oled_display.println(_iso_str);
 
-    SSD1306_string(56, 29, _status_str, 16, WHITE, oled_buf);
+    oled_display.setCursor(0, 15+3);
+    oled_display.println(_top_av_str);
+    oled_display.setCursor(110, 15+3);
+    oled_display.println(_top_t_str);
 
-    SSD1306_string(0, 48, _bottom_av_str, 12, WHITE, oled_buf);
-    SSD1306_string(110, 48, _bottom_t_str, 12, WHITE, oled_buf);
+    oled_display.setFont(&Monospaced_plain_12);
+    oled_display.setCursor(3, 29+12);
+    oled_display.println(_main_av_str);
+    oled_display.setCursor(101, 29+12);
+    oled_display.println(_main_t_str);
 
-    SSD1306_string(40, 48, _ev_str, 12, WHITE, oled_buf);
+    oled_display.setCursor(56, 29+12);
+    oled_display.println(_status_str);
+
+    oled_display.setFont();
 
 
-    SSD1306_horizontal_line(0, 127, 27, DOTS, oled_buf);
-    SSD1306_horizontal_line(0, 127, 47, DOTS, oled_buf);
-    SSD1306_vertical_line(27, 47, 0, DOTS, oled_buf);
-    SSD1306_vertical_line(27, 47, 127, DOTS, oled_buf);
 
-    SSD1306_display(oled_buf);
+
+    oled_display.setCursor(0, 48+3);
+    oled_display.println(_bottom_av_str);
+    oled_display.setCursor(110, 48+3);
+    oled_display.println(_bottom_t_str);
+
+    oled_display.setCursor(40, 48+3);
+    oled_display.println(_ev_str);
+
+//    oled_display.drawLine(0, 13, 127, 13, SSD1306_WHITE);
+//    oled_display.drawLine(0, 63, 127, 63, SSD1306_WHITE);
+//    oled_display.drawLine(0, 0, 127, 0, SSD1306_WHITE);
+
+    oled_display.drawRect(0, 27, 128, 21, SSD1306_WHITE);
+
+
+    oled_display.display();
 }
-
