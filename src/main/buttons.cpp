@@ -12,7 +12,7 @@ void setup_buttons(){
 }
 
 bool up_button_pressed(){
-    if (up_last_button_time - millis() < 30) return false;
+    if (up_last_button_time - millis() < 150) return false;
 
     int up_button_state = digitalRead(UP_BUTTON_PIN);
 
@@ -29,7 +29,7 @@ bool up_button_pressed(){
 }
 
 bool down_button_pressed(){
-    if (down_last_button_time - millis() < 30) return false;
+    if (down_last_button_time - millis() < 150) return false;
 
     int down_button_state = digitalRead(DOWN_BUTTON_PIN);
 

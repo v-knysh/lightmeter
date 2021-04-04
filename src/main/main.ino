@@ -39,25 +39,25 @@ void setup() {
 }
 
 void update_current_pair_up(){
-    print(" update_current_pair_up start", 0);
+    print(F(" update_current_pair_up start"), 0);
     if (up_button_pressed()){
         current_pair--;
         current_pair = max(current_pair, 0);
-        print(" updated pairs: ", current_pair);
+        print(F(" updated pairs up: "), current_pair);
     }
 }
 
 void update_current_pair_down(){
-    print(" update_current_pair_down start", 0);
+    print(F(" update_current_pair_down start"), 0);
     if (down_button_pressed()){
         current_pair++;
         current_pair = min(current_pair, max_pair);
-        print(" updated pairs: ", current_pair);
+        print(F(" updated pairs down: "), current_pair);
     }
 }
 
 void update_ev(){
-    print(" update_ev start", 0);
+    print(F(" update_ev start"), 0);
 
     curr_ev = ev;
     expopair.update(ev);
@@ -67,7 +67,6 @@ void update_ev(){
 }
 
 void render_monitor(){
-    print(" render_monitor start", 0);
 
     oled_monitor.set_ev(ev);
 
@@ -93,34 +92,25 @@ void loop() {
         update_ev();
     }
 
-//     if (up_button_pressed()){
-//         update_current_pair_up();
-//     }
-
-//     if (down_button_pressed()){
-//         update_current_pair_down();
-//     }
-
-    print(" ev: ", ev);
-    print(" current_pair: ", current_pair);
-    print(" pairs: ", pairs);
-    print(" aperture_value: ", String(expopair.aperture_value(current_pair) / 10) + '.' + String(expopair.aperture_value(current_pair) % 10));
-    print(" shutter_speed: ", expopair.shutter_speed(current_pair));
-    print(" status: ", expopair.status_str());
+     print(F(" ev: "), ev);
+     print(F(" current_pair: "), current_pair);
+     print(F(" pairs: "), pairs);
+     print(F(" aperture_value: "), String(expopair.aperture_value(current_pair) / 10) + '.' + String(expopair.aperture_value(current_pair) % 10));
+     print(F(" shutter_speed: "), expopair.shutter_speed(current_pair));
+     print(F(" status: "), expopair.status_str());
 
     render_monitor();
 
-    print("------------------------------: ", 0);
     interrupts();
 
-    delay(1500);
+    delay(150);
 
 }
 
 void print(String key, String val) {
     Serial.print(key);
     Serial.print(val);
-    Serial.println(";");
+    Serial.println(F(";"));
 }
 void print(String key, int val) {
     print(key, String(val));
@@ -137,5 +127,5 @@ void print(String key, char val) {
 
 void print_(String key) {
     Serial.print(key);
-    Serial.println(";");
+    Serial.println(F(";"));
 }
