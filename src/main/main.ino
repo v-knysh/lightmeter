@@ -1,6 +1,6 @@
 #include <math.h>
 #include <Wire.h>
-// #include "lightsensor.h"
+#include "lightsensor.h"
 #include "light_calc.h"
 // #include "monitor.h"
 // #include "servo.h"
@@ -9,14 +9,10 @@
 #include "constants.h"
 #include "buttons.h"
 
-
-float lux = 0;
-float ev = 12.0;
-
 int servoPin = 7;
 
 int current_pair = 0;
-int curr_ev = 0;
+float curr_ev = 0;
 int pairs = 0;
 int max_pair = 0;
 
@@ -25,7 +21,7 @@ OledMonitor oled_monitor;
 
 void setup() {
     Serial.begin(9600);
-//    lightsensorSetup();
+    lightsensorSetup();
 //    monitorSetup();
 //    servoSetup(servoPin);
     oled_monitor.setup();
@@ -56,16 +52,6 @@ void update_current_pair_down(){
     }
 }
 
-void update_ev(){
-    print(F(" update_ev start"), 0);
-
-    curr_ev = ev;
-    expopair.update(ev);
-    pairs = expopair.amount_pairs();
-    current_pair = pairs / 2;
-    max_pair = pairs - 1;
-}
-
 void render_monitor(){
 
     oled_monitor.set_ev(ev);
@@ -85,11 +71,15 @@ void render_monitor(){
 void loop() {
     noInterrupts();
 
-//     lux = getlux();
-//     ev = luxToEv(10.);
+    float lux = getlux();
+    float ev = luxToEv(lux);
 
     if (ev != curr_ev){
-        update_ev();
+        curr_ev = ev;
+        expopair.update(ev);
+        pairs = expopair.amount_pairs();
+        current_pair = pairs / 2;
+        max_pair = pairs - 1;
     }
 
      print(F(" ev: "), ev);
@@ -103,7 +93,7 @@ void loop() {
 
     interrupts();
 
-    delay(150);
+    delay(100);
 
 }
 
