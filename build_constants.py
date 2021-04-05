@@ -13,6 +13,8 @@ def array_str(arr):
 
 
 header_file_template = """
+#include <avr/pgmspace.h>
+
 #ifndef SHUTTERS_TABLE
     #define SHUTTERS_TABLE
 #endif
@@ -26,16 +28,14 @@ header_file_template = """
 #define CAMERA_NAME "{camera_name}"
 #define MAX_PAIRS {max_pairs}
 
-extern int shutter_speeds[LEN_SHUTTER_SPEEDS];
-extern int apertures[LEN_APERTURES];
+const PROGMEM int shutter_speeds[] = {{{shutter_speeds_array_str}}};
+const PROGMEM int apertures[] = {{{apertures_array_str}}};
 """
 
 
 impl_file_template = """
 #include "constants.h"
 
-int shutter_speeds[] = {{{shutter_speeds_array_str}}};
-int apertures[] = {{{apertures_array_str}}};
 """
 
 

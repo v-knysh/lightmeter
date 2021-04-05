@@ -1,3 +1,4 @@
+#include <avr/pgmspace.h>
 
 #ifndef SHUTTERS_TABLE
     #define SHUTTERS_TABLE
@@ -12,5 +13,5 @@
 #define CAMERA_NAME "FED5"
 #define MAX_PAIRS 5
 
-extern int shutter_speeds[LEN_SHUTTER_SPEEDS];
-extern int apertures[LEN_APERTURES];
+const int shutter_speeds[] PROGMEM = {30, 60, 125, 250, 500};
+const int apertures[] PROGMEM = {28, 40, 56, 80, 110, 160};
