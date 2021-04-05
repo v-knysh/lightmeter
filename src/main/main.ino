@@ -24,20 +24,22 @@ void setup() {
 //    monitorSetup();
 //    servoSetup(servoPin);
 
-//     print(F(" before sensor memory: "), freeMemory());
-    lightsensorSetup();
-    print(F(" sensor setup ok"), 0);
-
 //     print(F(" before monitor memory: "), freeMemory());
     oled_monitor.setup();
-    print(F(" monitor setup ok"), 0);
+//     print(F(" monitor setup ok"), 0);
+
+//     print(F(" before sensor memory: "), freeMemory());
+    lightsensorSetup();
+//     print(F(" sensor setup ok"), 0);
+
+
 
 
 
 //     print(F(" after monitor and sensor memory: "), freeMemory());
 
     setup_buttons();
-    print(F(" buttons setup ok"), 0);
+//     print(F(" buttons setup ok"), 0);
 
     oled_monitor.set_iso(200);
 
@@ -47,20 +49,20 @@ void setup() {
 }
 
 void update_current_pair_up(){
-    print(F(" update_current_pair_up start"), 0);
+//     print(F(" update_current_pair_up start"), 0);
     if (up_button_pressed()){
         current_pair--;
         current_pair = max(current_pair, 0);
-        print(F(" updated pairs up: "), current_pair);
+//         print(F(" updated pairs up: "), current_pair);
     }
 }
 
 void update_current_pair_down(){
-    print(F(" update_current_pair_down start"), 0);
+//     print(F(" update_current_pair_down start"), 0);
     if (down_button_pressed()){
         current_pair++;
         current_pair = min(current_pair, max_pair);
-        print(F(" updated pairs down: "), current_pair);
+//         print(F(" updated pairs down: "), current_pair);
     }
 }
 
@@ -94,11 +96,11 @@ void loop() {
         max_pair = pairs - 1;
     }
 
-     print(F(" ev: "), ev_x100);
-     print(F(" current_pair: "), current_pair);
-     print(F(" pairs: "), pairs);
-     print(F(" aperture_value: "), String(expopair.aperture_value(current_pair) / 10) + '.' + String(expopair.aperture_value(current_pair) % 10));
-     print(F(" shutter_speed: "), expopair.shutter_speed(current_pair));
+//      print(F(" ev: "), ev_x100);
+//      print(F(" current_pair: "), current_pair);
+//      print(F(" pairs: "), pairs);
+//      print(F(" aperture_value: "), String(expopair.aperture_value(current_pair) / 10) + '.' + String(expopair.aperture_value(current_pair) % 10));
+//      print(F(" shutter_speed: "), expopair.shutter_speed(current_pair));
 
     render_monitor();
 
