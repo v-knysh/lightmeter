@@ -79,8 +79,9 @@ void OledMonitor::set_bottom_t(int bottom_t){
     } else {
         sprintf(_bottom_t_str,"%3d",bottom_t);
     }}
-void OledMonitor::set_ev(float ev){
-    sprintf(_ev_str,"EV: %2d.%1d",int(ev),int(ev*10)%10);
+void OledMonitor::set_ev(int ev_x100){
+    int ev = ev_x100 / 100;
+    sprintf(_ev_str,"EV: %2d.%1d", ev, (ev_x100%100) / 10);
 
     if (ev < MIN_EV){
         int delta = MIN_EV-ev;

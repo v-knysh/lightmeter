@@ -13,6 +13,6 @@ float calibratedEv(float uncalibrated){
     return calibrated;
 }
 
-float luxToEv(float lux){
-    return calibratedEv(luxToUncalibratedEv(lux));
+int luxToEv(float lux){
+    return int(calibratedEv(luxToUncalibratedEv(lux)) * 100);
 }

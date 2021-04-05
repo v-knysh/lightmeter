@@ -2,6 +2,6 @@
   #define HEADER_LIGHTCALC
    
   //Prototype for helper_function found in HelperFunctions.cpp
-  float luxToEv(float lux);
+  int luxToEv(float lux);
 
 #endif

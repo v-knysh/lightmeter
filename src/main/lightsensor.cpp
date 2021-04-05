@@ -3,8 +3,8 @@
 #include "lightsensor.h"
 
 BH1750 lightMeter;
-
-int prev_lux_scan_time = 0;
+//
+//int prev_lux_scan_time = 0;
 float prev_lux_scan_value = 0;
 
 void lightsensorSetup(){
@@ -12,10 +12,13 @@ void lightsensorSetup(){
 }
 
 float getlux(){
-    int curr_time = millis();
-    if (prev_lux_scan_time + 1000 < curr_time) {
-        prev_lux_scan_time = curr_time;
-        prev_lux_scan_value = lightMeter.readLightLevel();
-    }
+    prev_lux_scan_value = lightMeter.readLightLevel();
+
+
+//    int curr_time = millis();
+//    if (prev_lux_scan_time + 1000 < curr_time) {
+//        prev_lux_scan_time = curr_time;
+//        prev_lux_scan_value = lightMeter.readLightLevel();
+//    }
     return prev_lux_scan_value;
 }

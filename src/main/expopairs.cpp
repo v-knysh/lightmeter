@@ -10,20 +10,20 @@
 #define CODE_NO_MORE_PAIRS -3
 
 
-int first_shutter_speed_index(int ev){
-  int delta_ev = ev - MIN_EV;
+uint8_t first_shutter_speed_index(uint8_t ev){
+  uint8_t delta_ev = ev - MIN_EV;
   return min(delta_ev, SHUTTER_SPEEDS_MAX_INDEX);
 }
 
-int first_aperture_index(int ev){
-  int delta_ev = ev - MIN_EV;
-  int delta = delta_ev - APERTURES_MAX_INDEX;
+uint8_t first_aperture_index(uint8_t ev){
+  uint8_t delta_ev = ev - MIN_EV;
+  uint8_t delta = delta_ev - APERTURES_MAX_INDEX;
   return max(delta, 0);
 }
 
-int total_pairs_amount(int first_shutter_speed_index, int first_aperture_index){
+uint8_t total_pairs_amount(uint8_t first_shutter_speed_index, uint8_t first_aperture_index){
   int delta = APERTURES_MAX_INDEX - first_aperture_index;
-  return min(first_shutter_speed_index + 1, delta);
+  return uint8_t(min(first_shutter_speed_index + 1, delta));
 }
 
 Expopair::Expopair(){
@@ -37,32 +37,27 @@ int Expopair::shutter_speed(int index){
     if ((_first_shutter_speed_index - index < 0) || (index < 0) || (index >= _amount_pairs)){
         return CODE_NO_MORE_PAIRS;
     }
-    return shutter_speeds[_first_shutter_speed_index - index];
+    return pgm_read_byte_near(&shutter_speeds[_first_shutter_speed_index - index]);
 }
 
 int Expopair::aperture_value(int index){
     if ((_first_aperture_index + index > APERTURES_MAX_INDEX) || (index >= _amount_pairs) || (index < 0)){
         return CODE_NO_MORE_PAIRS;
     }
-    return apertures[_first_aperture_index + index];
+    return pgm_read_byte_near(&apertures[_first_aperture_index + index]);
 }
 
 int Expopair::status(){
     return _status;
 }
 
-char Expopair::status_str(){
-    if (_status == CODE_MIN_EV){return '-';}
-    if (_status == CODE_MAX_EV){return '+';}
-    return ' ';
-}
 
-int Expopair::amount_pairs(){
+uint8_t Expopair::amount_pairs(){
     return _amount_pairs;
 }
 
-void Expopair::update(float ev){
-  int _ev = int(ev+0.5);
+void Expopair::update(int ev_x100){
+  uint8_t _ev = (ev_x100+50) / 100;
   if (_ev < MIN_EV){
     _status = CODE_MIN_EV;
     _first_shutter_speed_index = 0;
