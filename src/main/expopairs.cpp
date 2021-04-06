@@ -12,13 +12,13 @@
 
 uint8_t first_shutter_speed_index(uint8_t ev){
   uint8_t delta_ev = ev - MIN_EV;
-  return min(delta_ev, SHUTTER_SPEEDS_MAX_INDEX);
+  return uint8_t(min(delta_ev, SHUTTER_SPEEDS_MAX_INDEX));
 }
 
 uint8_t first_aperture_index(uint8_t ev){
   uint8_t delta_ev = ev - MIN_EV;
-  uint8_t delta = delta_ev - APERTURES_MAX_INDEX;
-  return max(delta, 0);
+  int delta = delta_ev - APERTURES_MAX_INDEX;
+  return uint8_t(max(delta, 0));
 }
 
 uint8_t total_pairs_amount(uint8_t first_shutter_speed_index, uint8_t first_aperture_index){
@@ -37,14 +37,14 @@ int Expopair::shutter_speed(int index){
     if ((_first_shutter_speed_index - index < 0) || (index < 0) || (index >= _amount_pairs)){
         return CODE_NO_MORE_PAIRS;
     }
-    return pgm_read_byte_near(&shutter_speeds[_first_shutter_speed_index - index]);
+    return pgm_read_word_near(&shutter_speeds[_first_shutter_speed_index - index]);
 }
 
 int Expopair::aperture_value(int index){
     if ((_first_aperture_index + index > APERTURES_MAX_INDEX) || (index >= _amount_pairs) || (index < 0)){
         return CODE_NO_MORE_PAIRS;
     }
-    return pgm_read_byte_near(&apertures[_first_aperture_index + index]);
+    return pgm_read_word_near(&apertures[_first_aperture_index + index]);
 }
 
 int Expopair::status(){

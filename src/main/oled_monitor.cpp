@@ -30,6 +30,7 @@ void OledMonitor::setup(){
     oled_display.display();
     delay(2000); // Pause for 2 seconds
     oled_display.clearDisplay();
+    oled_display.display();
 }
 
 void OledMonitor::set_iso(int iso){
