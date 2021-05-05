@@ -9,11 +9,11 @@
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-#define OLED_RESET    9
-#define OLED_DC       8
+#define OLED_RESET    5
+#define OLED_DC       4
 #define OLED_CS       10
-#define OLED_MOSI     11    /* connect to the DIN pin of OLED */
-#define OLED_CLK      13     /* connect to the CLK pin of OLED */
+#define OLED_MOSI     6    /* connect to the DIN pin of OLED */
+#define OLED_CLK      7     /* connect to the CLK pin of OLED */
 
 Adafruit_SSD1306 oled_display(SCREEN_WIDTH, SCREEN_HEIGHT,
   OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
@@ -27,6 +27,7 @@ void OledMonitor::setup(){
         Serial.println(F("SSD1306 allocation failed"));
         for(;;); // Don't proceed, loop forever
     }
+    oled_display.setRotation(2);
     oled_display.display();
     delay(2000); // Pause for 2 seconds
     oled_display.clearDisplay();
